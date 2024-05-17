@@ -57,7 +57,7 @@ const deletePost = async (req, res) => {
 const postComment = async (req, res) => {
   try {
     let comment = {
-      post_comment: req.body.comment,
+      post_comment: req.body.post_comment,
     };
     let result = await client
       .db("socnet")
