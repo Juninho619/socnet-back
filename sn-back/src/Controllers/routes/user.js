@@ -18,7 +18,7 @@ router.post("/profile", insertProfilePic);
 router.post("/login", login);
 router.get("/follow", followUser);
 router.get("/displayusers", displayAllUsers);
-router.delete("deleteuser", deleteUser);
+router.delete("/deleteuser", deleteUser);
 router.post("/searchuser", searchUser);
 router.post("/resetpasswordrequest", resetPasswordRequest);
 router.post("/passwordreset", passwordReset);

@@ -151,7 +151,9 @@ const displayAllUsers = async (req, res) => {
 const deleteUser = async (req, res) => {
   const { id } = req.body;
   try {
-    const sql = `DELETE FROM 'users' WHERE user_id=? `;
+    const [rows] = await pool.execute(
+      `DELETE FROM users WHERE user_id = ${id}; `
+    );
     res.status(200).json({ msg: "user deleted" });
   } catch (e) {
     console.log(e);
