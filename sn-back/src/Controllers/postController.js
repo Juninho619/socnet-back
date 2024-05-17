@@ -1,4 +1,5 @@
 const { response } = require("express");
+const { pool } = require("../connexions/db");
 const client = require("../connexions/connexion");
 
 const post = async (req, res) => {
@@ -106,6 +107,20 @@ const displayPostbyFollowed = async (req, res) => {
   }
 };
 
+const followedUsers = async (req, res) => {
+  const { followedId, followerId } = req.params;
+  try {
+    const [rows] = await pool.query(
+      `SELECT * FROM follow JOIN users AS u on follow.followed_id = u.user_id`
+    );
+    console.log(rows);
+    res.status(200).json(rows);
+  } catch (e) {
+    console.log(e);
+    res.status(500).json(e);
+  }
+};
+
 module.exports = {
   post,
   updatePost,
@@ -114,4 +129,5 @@ module.exports = {
   postLike,
   postDislike,
   displayPostbyFollowed,
+  followedUsers,
 };

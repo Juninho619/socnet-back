@@ -7,6 +7,7 @@ const {
   postLike,
   postDislike,
   displayPostbyFollowed,
+  followedUsers,
 } = require("../postController");
 const router = express.Router();
 
@@ -17,5 +18,6 @@ router.post("/comment", postComment);
 router.post("/like", postLike);
 router.post("/dislike", postDislike);
 router.get("/postsbyfollowed/:followedId", displayPostbyFollowed);
+router.get("/followedusers/:followedId", followedUsers);
 
 module.exports = router;
