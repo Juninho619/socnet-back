@@ -8,10 +8,12 @@ const {
   postDislike,
   displayPostbyFollowed,
   followedUsers,
+  insertPostPic,
 } = require("../postController");
 const router = express.Router();
 
 router.post("/newpost", post);
+router.post("/postpic", insertPostPic);
 router.put("/updatepost", updatePost);
 router.delete("/deletepost", deletePost);
 router.post("/comment", postComment);
