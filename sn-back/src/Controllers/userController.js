@@ -109,6 +109,7 @@ const login = async (req, res) => {
           {
             email: result[0].email,
             id: result[0].user_id,
+            role: result[0].role,
           },
           process.env.MY_SECRET_KEY,
           { expiresIn: "20d" }
@@ -116,7 +117,6 @@ const login = async (req, res) => {
         console.log();
         res.status(200).json({ jwt: token });
         console.log("login successful");
-        return;
       }
     }
   } catch (error) {
