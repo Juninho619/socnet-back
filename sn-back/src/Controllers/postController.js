@@ -55,14 +55,13 @@ const deletePost = async (req, res) => {
 };
 
 const postComment = async (req, res) => {
+  const id = new ObjectId(req.body.id);
   try {
-    let comment = {
-      post_comment: req.body.post_comment,
-    };
+    let comment = req.body.comment;
     let result = await client
       .db("socnet")
       .collection("posts")
-      .insertOne(comment);
+      .updateOne({ _id: id }, { $set: { post_comment: comment } });
   } catch (e) {
     res.status(500).json(e);
   }
