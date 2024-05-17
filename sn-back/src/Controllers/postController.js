@@ -1,5 +1,7 @@
+const { ObjectId } = require("mongodb");
 const { response } = require("express");
 const { pool } = require("../connexions/db");
+
 const client = require("../connexions/connexion");
 
 const post = async (req, res) => {
@@ -36,17 +38,16 @@ const updatePost = async (req, res) => {
 };
 
 const deletePost = async (req, res) => {
-  const { id } = req.body;
+  let { id } = new ObjectId(req.body);
+  console.log(id);
   try {
     let result = await client
       .db("socnet")
       .collection("posts")
       .deleteOne({ _id: id });
-    if (result.deletedCount === 1) {
+    if (result.deletedCount === 1)
       response.status(200).json({ msg: "DELETION!" });
-    } else {
-      response.status(404).json({ msg: "Could not be deleted" });
-    }
+    else response.status(404).json({ msg: "Could not be deleted" });
   } catch (e) {
     console.log(e);
     res.status(500).json(e);
