@@ -6,7 +6,6 @@ const {
   displayAllUsers,
   deleteUser,
   searchUser,
-  resetPassword,
   insertProfilePic,
   resetPasswordRequest,
   passwordReset,
