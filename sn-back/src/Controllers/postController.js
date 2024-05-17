@@ -115,7 +115,7 @@ const followedUsers = async (req, res) => {
   const { followedId, followerId } = req.params;
   try {
     const [rows] = await pool.query(
-      `SELECT * FROM follow JOIN users AS u on follow.followed_id = u.user_id`
+      `SELECT user_id FROM follow JOIN users AS u on follow.follower_id = u.user_id`
     );
     console.log(rows);
     res.status(200).json(rows);

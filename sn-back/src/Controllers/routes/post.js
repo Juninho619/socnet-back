@@ -18,6 +18,6 @@ router.post("/comment", postComment);
 router.post("/like", postLike);
 router.post("/dislike", postDislike);
 router.get("/postsbyfollowed/:followedId", displayPostbyFollowed);
-router.get("/followedusers/:followedId", followedUsers);
+router.get("/followedusers/:followerId", followedUsers);
 
 module.exports = router;
