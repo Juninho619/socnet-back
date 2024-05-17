@@ -107,8 +107,9 @@ const login = async (req, res) => {
       if (isValid) {
         const token = jwt.sign(
           {
-            email: result[0].email,
+            email: result[0].user_email,
             id: result[0].user_id,
+            role: result[0].role,
           },
           process.env.MY_SECRET_KEY,
           { expiresIn: "20d" }
@@ -116,7 +117,6 @@ const login = async (req, res) => {
         console.log();
         res.status(200).json({ jwt: token });
         console.log("login successful");
-        return;
       }
     }
   } catch (error) {
@@ -151,7 +151,9 @@ const displayAllUsers = async (req, res) => {
 const deleteUser = async (req, res) => {
   const { id } = req.body;
   try {
-    const sql = `DELETE FROM 'users' WHERE user_id=? `;
+    const [rows] = await pool.execute(
+      `DELETE FROM users WHERE user_id = ${id}; `
+    );
     res.status(200).json({ msg: "user deleted" });
   } catch (e) {
     console.log(e);

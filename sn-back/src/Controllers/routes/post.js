@@ -7,15 +7,19 @@ const {
   postLike,
   postDislike,
   displayPostbyFollowed,
+  followedUsers,
+  insertPostPic,
 } = require("../postController");
 const router = express.Router();
 
 router.post("/newpost", post);
+router.post("/postpic", insertPostPic);
 router.put("/updatepost", updatePost);
 router.delete("/deletepost", deletePost);
 router.post("/comment", postComment);
 router.post("/like", postLike);
 router.post("/dislike", postDislike);
-router.get("/postsbyfollowed", displayPostbyFollowed);
+router.get("/postsbyfollowed/:followedId", displayPostbyFollowed);
+router.get("/followedusers/:followerId", followedUsers);
 
 module.exports = router;
