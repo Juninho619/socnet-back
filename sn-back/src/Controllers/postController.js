@@ -89,7 +89,7 @@ const postDislike = async (req, res) => {
 };
 
 const displayPostbyFollowed = async (req, res) => {
-  const followedId = req.body.followedId;
+  const followedId = req.params.followedId;
   try {
     let cursor = client
       .db("socnet")

@@ -16,6 +16,6 @@ router.delete("/deletepost", deletePost);
 router.post("/comment", postComment);
 router.post("/like", postLike);
 router.post("/dislike", postDislike);
-router.get("/postsbyfollowed", displayPostbyFollowed);
+router.get("/postsbyfollowed/:followedId", displayPostbyFollowed);
 
 module.exports = router;
