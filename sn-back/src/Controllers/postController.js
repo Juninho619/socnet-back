@@ -68,22 +68,26 @@ const postComment = async (req, res) => {
 };
 
 const postLike = async (req, res) => {
+  const id = new ObjectId(req.body.id);
   try {
     let result = await client
       .db("socnet")
       .collection("posts")
-      .updateOne({ post_like: +1 });
+      .updateOne({ _id: id }, { $inc: { post_like: 1 } });
+    res.status(200).json(result);
   } catch (e) {
     res.status(500).json(e);
   }
 };
 
 const postDislike = async (req, res) => {
+  const id = new ObjectId(req.body.id);
   try {
     let result = await client
       .db("socnet")
       .collection("posts")
-      .updateOne({ post_dislike: -1 });
+      .updateOne({ _id: id }, { $inc: { post_dislike: 1 } });
+    res.status(200).json(result);
   } catch (e) {
     res.status(500).json(e);
   }
