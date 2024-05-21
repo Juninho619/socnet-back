@@ -160,24 +160,25 @@ const displayPostbyFollowed = async (req, res) => {
 
   if (!followerId) res.status(400).json({ error: "missing parameter" });
 
-  const [rows] = await pool.query(
-    `SELECT followed_id FROM follow WHERE follower_id = ${followerId};`
-  );
+  try {
+    const [rows] = await pool.query(
+      `SELECT followed_id FROM follow WHERE follower_id=${followerId};`
+    );
 
-  let cursor = client
-    .db("socnet")
-    .collection("posts")
-    .find({ post_user_id: { $in: rows } });
-  let result = await cursor.toArray();
-  console.log(result);
-  console.log(followerId);
-  console.log(rows);
-  if (result.length > 0) {
-    res.status(200).json(result);
-  }
-  if (result.length == 0)
-    res.status(204).json({ msg: "User hasn't posted yet" });
-  else {
+    let cursor = client
+      .db("socnet")
+      .collection("posts")
+      .find({ post_user_id: { $in: rows } });
+    let result = await cursor.toArray();
+    console.log(result);
+    console.log(rows);
+
+    if (result.length > 0) res.status(200).json(result);
+
+    if (result.length == 0)
+      res.status(204).json({ msg: "User hasn't posted yet" });
+  } catch (e) {
+    console.log(e);
     res.status(500).json({ msg: "Internal server Error" });
   }
 };
