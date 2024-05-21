@@ -158,20 +158,20 @@ const followUser = async (req, res) => {
 const displayPostbyFollowed = async (req, res) => {
   const followerId = req.params.followerId;
 
-  if (!followerId) res.status(400).json({ error: "missing parameter" });
-
   try {
     const [rows] = await pool.query(
       `SELECT followed_id FROM follow WHERE follower_id=${followerId};`
     );
 
+    const followedIds = rows.map((obj) => obj.followed_id);
+
     let cursor = client
       .db("socnet")
       .collection("posts")
-      .find({ post_user_id: { $in: rows } });
+      .find({ post_user_id: { $in: followedIds } });
     let result = await cursor.toArray();
     console.log(result);
-    console.log(rows);
+    console.log(followedIds);
 
     if (result.length > 0) res.status(200).json(result);
 
