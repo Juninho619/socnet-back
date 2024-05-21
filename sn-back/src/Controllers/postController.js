@@ -144,35 +144,20 @@ const postDislike = async (req, res) => {
 };
 
 const displayPostbyFollowed = async (req, res) => {
-  const followedId = req.params.followedId;
-  try {
-    let cursor = client
-      .db("socnet")
-      .collection("posts")
-      .find({ post_user_id: followedId });
-    let result = await cursor.toArray();
-    console.log(result);
-    if (result.length > 0) {
-      res.status(200).json(result);
-    } else res.status(204).json({ msg: "User hasn't posted yet" });
-  } catch (error) {
-    console.log(error);
-    response.status(501).json(error);
-  }
-};
+  const followerId = req.params.followedId;
+  const [rows] = await pool.query(
+    `SELECT user_id FROM follow JOIN users AS u on follow.follower_id = u.user_id`
+  );
 
-const followedUsers = async (req, res) => {
-  const { followedId, followerId } = req.params;
-  try {
-    const [rows] = await pool.query(
-      `SELECT user_id FROM follow JOIN users AS u on follow.follower_id = u.user_id`
-    );
-    console.log(rows);
-    res.status(200).json(rows);
-  } catch (e) {
-    console.log(e);
-    res.status(500).json(e);
-  }
+  let cursor = client
+    .db("socnet")
+    .collection("posts")
+    .find({ post_user_id: followedId });
+  let result = await cursor.toArray();
+  console.log(result);
+  if (result.length > 0) {
+    res.status(200).json(result);
+  } else res.status(204).json({ msg: "User hasn't posted yet" });
 };
 
 module.exports = {
