@@ -15,7 +15,7 @@ const router = express.Router();
 router.post("/register", register);
 router.post("/profile", insertProfilePic);
 router.post("/login", login);
-router.get("/follow", followUser);
+router.post("/follow", followUser);
 router.get("/displayusers", displayAllUsers);
 router.delete("/deleteuser", deleteUser);
 router.post("/searchuser", searchUser);

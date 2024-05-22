@@ -143,35 +143,43 @@ const postDislike = async (req, res) => {
   }
 };
 
-const displayPostbyFollowed = async (req, res) => {
-  const followedId = req.params.followedId;
+const followUser = async (req, res) => {
+  const { followerId, followedId } = req.body;
   try {
-    let cursor = client
-      .db("socnet")
-      .collection("posts")
-      .find({ post_user_id: followedId });
-    let result = await cursor.toArray();
-    console.log(result);
-    if (result.length > 0) {
-      res.status(200).json(result);
-    } else res.status(204).json({ msg: "User hasn't posted yet" });
+    const [rows] = await pool.execute(
+      `INSERT INTO follow(follower_id, followed_id) VALUES(${followerId}, ${followedId})`
+    );
+    res.status(200).json(rows);
   } catch (error) {
-    console.log(error);
-    response.status(501).json(error);
+    res.status(500).json(error);
   }
 };
 
-const followedUsers = async (req, res) => {
-  const { followedId, followerId } = req.params;
+const displayPostbyFollowed = async (req, res) => {
+  const followerId = req.params.followerId;
+
   try {
     const [rows] = await pool.query(
-      `SELECT user_id FROM follow JOIN users AS u on follow.follower_id = u.user_id`
+      `SELECT followed_id FROM follow WHERE follower_id=${followerId};`
     );
-    console.log(rows);
-    res.status(200).json(rows);
+
+    const followedIds = rows.map((obj) => obj.followed_id);
+
+    let cursor = client
+      .db("socnet")
+      .collection("posts")
+      .find({ post_user_id: { $in: followedIds } });
+    let result = await cursor.toArray();
+    console.log(result);
+    console.log(followedIds);
+
+    if (result.length > 0) res.status(200).json(result);
+
+    if (result.length == 0)
+      res.status(204).json({ msg: "User hasn't posted yet" });
   } catch (e) {
     console.log(e);
-    res.status(500).json(e);
+    res.status(500).json({ e });
   }
 };
 
@@ -183,6 +191,6 @@ module.exports = {
   postComment,
   postLike,
   postDislike,
+  followUser,
   displayPostbyFollowed,
-  followedUsers,
 };
