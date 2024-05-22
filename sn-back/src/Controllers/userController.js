@@ -154,7 +154,7 @@ const deleteUser = async (req, res) => {
     const [rows] = await pool.execute(
       `DELETE FROM users WHERE user_id = ${id}; `
     );
-    res.status(200).json({ msg: "user deleted" });
+    res.status(200).json({ msg: `user ${id} deleted` });
   } catch (e) {
     console.log(e);
     res.status(500).json(e);
