@@ -163,14 +163,17 @@ const deleteUser = async (req, res) => {
 
 const searchUser = async (req, res) => {
   const { username, userEmail } = req.body;
-  if (!username && !userEmail) {
+
+  if (!username && !userEmail)
     res.status(500).json({ msg: "nothing to search" });
-  }
+
   // Conditions en cas de username ou d'email
   if (username) {
-    const [rows] = await pool.query(
-      `SELECT * FROM users WHERE username LIKE '%?%';`
-    );
+    const query = `SELECT * FROM users WHERE username LIKE ?;`;
+    const [rows] = await pool.query(query, [`%${username}%`]);
+
+    console.log(rows);
+    console.log(username);
     res.status(200).json(rows);
   }
   if (userEmail) {
