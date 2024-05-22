@@ -179,7 +179,7 @@ const displayPostbyFollowed = async (req, res) => {
       res.status(204).json({ msg: "User hasn't posted yet" });
   } catch (e) {
     console.log(e);
-    res.status(500).json({ msg: "Internal server Error" });
+    res.status(500).json({ e });
   }
 };
 
