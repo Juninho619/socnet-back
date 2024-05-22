@@ -31,7 +31,7 @@ const register = async (req, res) => {
 const insertProfilePic = async (req, res) => {
   // Insérer image dans tableau correspondant
   const uploadDirectory = path.join(__dirname, "../uploads");
-  console.log(uploadDirectory);
+
   let newFileName;
   let storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -77,6 +77,10 @@ const insertProfilePic = async (req, res) => {
       res.send({ newFileName: newFileName });
     }
   });
+  // identify user, update table
+
+  // const [rows] = await pool.execute(`INSERT INTO users (user_profile)
+  // VALUES ${newFileName}`);
 };
 
 const login = async (req, res) => {
