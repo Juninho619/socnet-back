@@ -166,6 +166,7 @@ const showAllPosts = async (req, res) => {
       response.status(204).json({ msg: "No content" });
     }
   } catch (error) {
+    console.log(error);
     response.status(500).json({ error });
   }
 };
