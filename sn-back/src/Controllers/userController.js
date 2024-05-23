@@ -202,6 +202,7 @@ const resetPasswordRequest = async (req, res) => {
     text: "Reset your password",
     html: `<p>  It seems you requested a link to reset your password. Here it is:
                 <a href="http://localhost:3045/resetpasswordrequest/${cleanToken}">Reset your password</a>
+                <a href=http://172.30.48.1:5500/sn-front/passwordreset.html>Here</a>
           </p>
           <p>If you didn't make such a request, you can safely ignore this message.</p>
           <p>Cheers,</p>`,
