@@ -156,6 +156,20 @@ const followUser = async (req, res) => {
   }
 };
 
+const showAllPosts = async (req, res) => {
+  try {
+    let apiRequest = client.db("socnet").collection("posts").find();
+    let posts = await apiRequest.toArray();
+    if (posts && posts.length > 0) {
+      response.status(200).json(posts);
+    } else {
+      response.status(204).json({ msg: "No content" });
+    }
+  } catch (error) {
+    response.status(500).json({ error });
+  }
+};
+
 const displayPostbyFollowed = async (req, res) => {
   const followerId = req.params.followerId;
 
@@ -193,5 +207,6 @@ module.exports = {
   postLike,
   postDislike,
   followUser,
+  showAllPosts,
   displayPostbyFollowed,
 };
