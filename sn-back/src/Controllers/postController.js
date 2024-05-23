@@ -111,31 +111,11 @@ const postComment = async (req, res) => {
     let result = await client
       .db("socnet")
       .collection("posts")
-      .updateOne({ _id: id }, { $set: { post_comment: comment } });
+      .updateOne({ _id: id }, { $push: { comment: comment } });
     res.status(200).json(comment);
   } catch (e) {
     res.status(500).json(e);
   }
-  // const postComment = async (req, res) => {
-  //   const id = new ObjectId(req.body.id);
-  //   try {
-  //     let comment = req.body.comment;
-  //     const commentCollectionName = `comments_${id}`; // Create a unique collection name
-
-  //     // Create a new collection for comments if it doesn't exist
-  //     await client.db("socnet").createCollection(commentCollectionName);
-
-  //     // Insert the comment into the newly created collection
-  //     await client
-  //       .db("socnet")
-  //       .collection(commentCollectionName)
-  //       .insertOne({ comment });
-
-  //     res.status(200).json(comment);
-  //   } catch (e) {
-  //     res.status(500).json(e);
-  //   }
-  // };
 };
 
 const postLike = async (req, res) => {
