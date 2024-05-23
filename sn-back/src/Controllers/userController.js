@@ -201,10 +201,10 @@ const resetPasswordRequest = async (req, res) => {
     subject: "Reset your password",
     text: "Reset your password",
     html: `<p>  It seems you requested a link to reset your password. Here it is:
-                <a href="http://localhost:3045/resetpassword/${cleanToken}">Reset your password</a>
+                <a href="http://localhost:3045/resetpasswordrequest/${cleanToken}">Reset your password</a>
           </p>
           <p>If you didn't make such a request, you can safely ignore this message.</p>
-          <p>Cheers</p>`,
+          <p>Cheers,</p>`,
   });
   res.status(200).json(info);
 };
@@ -216,6 +216,12 @@ const passwordReset = async (req, res) => {
   const sql = await pool.execute(`UPDATE users
   set password ='${hashedNewPassword}' WHERE user_email='${email}';`);
 };
+
+// const selectUserByFollows = async (req,res)=>{
+//   try{
+//     const [rows]= await pool.query(`SELECT username FROM users as u JOIN follow as f WHERE u.users_id=f.followed_id ORDER by  `)
+//   }
+// }
 
 module.exports = {
   register,

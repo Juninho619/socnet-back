@@ -20,6 +20,7 @@ router.get("/displayusers", displayAllUsers);
 router.delete("/deleteuser", deleteUser);
 router.post("/searchuser", searchUser);
 router.post("/resetpasswordrequest", resetPasswordRequest);
+router.get("/resetpasswordrequest/:token", resetPasswordRequest);
 router.post("/passwordreset", passwordReset);
 
 module.exports = router;
