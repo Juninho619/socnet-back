@@ -187,7 +187,6 @@ const displayPostbyFollowed = async (req, res) => {
       .find({ post_user_id: { $in: followedIds } });
     let result = await cursor.toArray();
     console.log(result);
-    console.log(followedIds);
 
     if (result.length > 0) res.status(200).json(result);
 
