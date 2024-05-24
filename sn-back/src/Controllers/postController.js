@@ -7,14 +7,22 @@ const client = require("../connexions/connexion");
 const post = async (req, res) => {
   const userId = req.body.userId;
   try {
+    const sql = `SELECT username FROM users WHERE user_id = ?`;
+    const [rows] = await pool.query(sql, userId);
     const post = req.body.post;
     let result = await client
       .db("socnet")
       .collection("posts")
-      .insertMany([{ post_content: post, post_user_id: userId }]);
-    console.log(post);
-    console.log(userId);
-    response.status(200).json(result);
+      .insertMany([
+        {
+          post_content: post,
+          post_user_id: userId,
+          post_username: rows[0],
+        },
+      ]);
+
+    console.log(rows);
+    res.status(200).json({ result, rows });
   } catch (e) {
     console.log(e);
     res.status(500).json(e);
