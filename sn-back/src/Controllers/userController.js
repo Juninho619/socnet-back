@@ -21,6 +21,7 @@ const register = async (req, res) => {
       `INSERT INTO users (first_name, last_name, user_email, profile, password, role, username )
       VALUES('${firstName}', '${lastName}', '${email}','${defaultPic}', '${hashedPassword}', 'user','${username}');`
     );
+    // insert pic under condition one is provided
     res.status(200).json("Welcome, " + username);
   } catch (err) {
     console.log(err);
@@ -30,9 +31,11 @@ const register = async (req, res) => {
 
 const insertProfilePic = async (req, res) => {
   // Insérer image dans tableau correspondant
+  // identify user, update table
+  const id = req.params.id;
   const uploadDirectory = path.join(__dirname, "../uploads");
 
-  let newFileName;
+  let newFileName = req.body.image;
   let storage = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, uploadDirectory);
@@ -70,17 +73,19 @@ const insertProfilePic = async (req, res) => {
     },
   }).single("image");
 
-  upload(req, res, function (err) {
+  upload(req, res, async function (err) {
     if (err) {
       res.send(err);
     } else {
+      const query = `UPDATE users set profile = '${newFileName}' WHERE user_id = ?`;
+      console.log(newFileName);
+      const [rows] = await pool.query(query, id);
+      console.log(rows);
       res.send({ newFileName: newFileName });
     }
   });
-  // identify user, update table
 
-  // const [rows] = await pool.execute(`INSERT INTO users (user_profile)
-  // VALUES ${newFileName}`);
+  // res.status(200).json(rows);
 };
 
 const login = async (req, res) => {
@@ -181,9 +186,8 @@ const searchUser = async (req, res) => {
     res.status(200).json(rows);
   }
   if (userEmail) {
-    const [rows2] = await pool.query(
-      `SELECT * FROM users WHERE user_email LIKE '%?%';`
-    );
+    const query1 = `SELECT * FROM users WHERE user_email LIKE ?;`;
+    const [rows2] = await pool.query(query1, [`%${username}%`]);
     res.status(200).json(rows2);
   }
 };

@@ -13,7 +13,7 @@ const {
 const router = express.Router();
 
 router.post("/register", register);
-router.post("/profile", insertProfilePic);
+router.post("/profile/:id", insertProfilePic);
 router.post("/login", login);
 router.post("/follow", followUser);
 router.get("/displayusers", displayAllUsers);
