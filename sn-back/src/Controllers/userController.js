@@ -211,11 +211,12 @@ const resetPasswordRequest = async (req, res) => {
 };
 
 const passwordReset = async (req, res) => {
-  const newPassword = req.body.newPassword;
   const email = req.body.email;
+  const newPassword = req.body.newPassword;
   const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-  const sql = await pool.execute(`UPDATE users
+  const [sql] = await pool.execute(`UPDATE users
   set password ='${hashedNewPassword}' WHERE user_email='${email}';`);
+  res.status(200).json(sql);
 };
 
 // const selectUserByFollows = async (req,res)=>{
