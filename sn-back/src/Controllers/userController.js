@@ -9,7 +9,7 @@ var cors = require("cors");
 
 const register = async (req, res) => {
   const { firstName, lastName, email, password, username } = req.body;
-  // const defaultPic =
+  const defaultPic = "image-1715698230026.jpg";
 
   if (!firstName || !lastName || !email || !username || !password) {
     res.status(400).json({ msg: "missing fields" });
@@ -18,8 +18,8 @@ const register = async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const [rows] = await pool.execute(
-      `INSERT INTO users (first_name, last_name, user_email, user_profile, password, role, username )
-      VALUES('${firstName}', '${lastName}', '${email}','../uploads/profile', '${hashedPassword}', 'user','${username}');`
+      `INSERT INTO users (first_name, last_name, user_email, profile, password, role, username )
+      VALUES('${firstName}', '${lastName}', '${email}','${defaultPic}', '${hashedPassword}', 'user','${username}');`
     );
     res.status(200).json("Welcome, " + username);
   } catch (err) {
